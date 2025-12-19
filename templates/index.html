@@ -181,6 +181,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            box-sizing: border-box;
         }
 
         .btn:hover {
@@ -277,6 +278,191 @@
         .form-control:focus {
             border-color: var(--primary-color);
             outline: none;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            #report-card {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .summary-badge {
+                font-size: 1.4em;
+                padding: 8px 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .stat-item {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 2em;
+            }
+
+            .stat-label {
+                font-size: 0.85em;
+            }
+
+            .ai-summary {
+                padding: 15px;
+                font-size: 0.95em;
+                line-height: 1.6;
+            }
+
+            .course-item {
+                flex-direction: column;
+                gap: 8px;
+                padding: 15px 0;
+            }
+
+            .course-name {
+                font-size: 1em;
+            }
+
+            .course-stats {
+                font-size: 0.9em;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.95em;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+                max-width: 100%;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .decoration {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            #report-card {
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            .summary-badge {
+                font-size: 1.2em;
+                padding: 6px 12px;
+                margin: 15px 0;
+            }
+
+            .stats-grid {
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .stat-item {
+                padding: 12px;
+            }
+
+            .stat-value {
+                font-size: 1.8em;
+            }
+
+            .stat-label {
+                font-size: 0.8em;
+            }
+
+            .ai-summary {
+                padding: 12px;
+                font-size: 0.9em;
+                line-height: 1.5;
+                border-left-width: 3px;
+            }
+
+            .course-list h3 {
+                font-size: 1.1em;
+            }
+
+            .course-item {
+                padding: 12px 0;
+                font-size: 0.9em;
+            }
+
+            .course-name {
+                font-size: 0.95em;
+            }
+
+            .course-stats {
+                font-size: 0.85em;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+                width: 100%;
+            }
+
+            .footer {
+                font-size: 0.75em;
+                margin-top: 30px;
+            }
+
+            .login-card {
+                padding: 20px 15px;
+            }
+
+            .login-card h1 {
+                font-size: 1.4em;
+            }
+
+            .form-control {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+
+            .loading-overlay h2 {
+                font-size: 1.3em;
+                padding: 0 20px;
+            }
+
+            .loading-overlay p {
+                font-size: 0.9em;
+                padding: 0 20px;
+            }
         }
 
     </style>
