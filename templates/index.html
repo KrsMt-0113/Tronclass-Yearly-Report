@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学期表现总结报告</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f5f6fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        #report-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            background-image: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .summary-badge {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8em;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            transform: rotate(-2deg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(44, 62, 80, 0.03);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-summary {
+            background-color: #fff;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin-bottom: 40px;
+            font-style: italic;
+            color: #34495e;
+            line-height: 1.8;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .course-list {
+            margin-top: 30px;
+        }
+
+        .course-list h3 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .course-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95em;
+        }
+
+        .course-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .course-stats {
+            color: #7f8c8d;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #bdc3c7;
+            font-size: 0.8em;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 62, 80, 0.4);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            top: -100px;
+            right: -100px;
+        }
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    {% if not data %}
+    <div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+        <div class="login-card">
+            <div class="header">
+                <h1>学期报告生成</h1>
+                <div class="subtitle">请输入您的教务系统账号密码</div>
+            </div>
+
+            {% if error %}
+            <div style="color: #e74c3c; background: #fde8e7; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9em;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/generate" method="POST" onsubmit="showLoading()">
+                <div class="form-group">
+                    <label for="username">学号 / 工号</label>
+                    <input type="text" id="username" name="username" class="form-control" required placeholder="请输入学号">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" class="form-control" required placeholder="请输入密码">
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; justify-content: center;">
+                    生成报告
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <h2>正在生成您的学期报告...</h2>
+        <p>正在分析课程、作业与考试数据，请耐心等待</p>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+    </script>
+    {% else %}
+
+    <div class="container">
+        <div id="report-card">
+            <div class="decoration circle-1"></div>
+            <div class="decoration circle-2"></div>
+
+            <div class="header">
+                <h1>学期表现总结</h1>
+                <div class="subtitle">{{ data.semester_name }} · {{ data.student_name }}</div>
+
+                <div class="summary-badge">
+                    {{ data.summary_title }}
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value">{{ "%.1f"|format(data.rollcall_rate) }}%</span>
+                    <span class="stat-label">出勤率</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ "%.1f"|format(data.homework_rate) }}%</span>
+                    <span class="stat-label">作业提交率</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ "%.1f"|format(data.exam_score) }}</span>
+                    <span class="stat-label">平均分</span>
+                </div>
+            </div>
+
+            <div class="ai-summary">
+                "{{ data.summary_text }}"
+            </div>
+
+            <div class="course-list">
+                <h3>课程详情</h3>
+                {% for course in data.details %}
+                <div class="course-item">
+                    <span class="course-name">{{ course.name }}</span>
+                    <span class="course-stats">
+                        {% if course.score %}
+                        均分: {{ "%.1f"|format(course.score) }}
+                        {% endif %}
+                        {% if course.absent_count > 0 %}
+                        <span style="color: #e74c3c; margin-left: 10px;">缺勤 {{ course.absent_count }} 次</span>
+                        {% elif course.rollcall_count > 0 %}
+                        <span style="color: #27ae60; margin-left: 10px;">全勤</span>
+                        {% endif %}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="footer">
+                Developed by KrsMt-0113@GitHub
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="downloadPoster()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                保存为图片
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function downloadPoster() {
+            const element = document.getElementById('report-card');
+            const btn = document.querySelector('.btn');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '生成中...';
+            btn.disabled = true;
+
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = '学期总结报告.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+    </script>
+    {% endif %}
+</body>
+</html>
+
